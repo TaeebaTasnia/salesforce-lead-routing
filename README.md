@@ -28,30 +28,16 @@ If neither condition matches, the Lead retains its default owner.
 
 ---
 
-## Routing Logic Diagram
+## Flow Diagram
 
-```
-Lead Created
-     │
-     ▼
-Lead Source = Web? ──Yes──► Assign to Marketing Leads Queue
-     │
-     No
-     │
-Lead Source = Partner Referral? ──Yes──► Assign to Sales Leads Queue
-     │
-     No
-     │
-Country = Bangladesh / India / Singapore? ──Yes──► Assign to APAC Leads Queue
-     │
-     No
-     │
-Country = United States / United Kingdom? ──Yes──► Assign to Western Leads Queue
-     │
-     No
-     │
-(No change — default owner kept)
-```
+![Lead Routing Flow](screenshots/flow-diagram.png)
+
+The Flow starts on Lead creation and runs two Decision elements:
+
+1. **Check Lead Source** — branches into Website Leads, Partner Leads, or Default Outcome
+2. **Check Lead Country** (Default Outcome path) — branches into APAC Countries, Western Countries, or ends with no change
+
+Each branch uses **Get Records** to fetch the queue's Group ID, then **Update Records** to set the Lead's `OwnerId`.
 
 ---
 
